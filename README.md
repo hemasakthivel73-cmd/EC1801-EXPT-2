@@ -21,60 +21,42 @@ File name	Purpose
 logic_gates.v	Logic-gate RTL
 logic_gates_tb.v	All input combinations and VCD generation
  # Verilog  Program
+The basic logic gates — AND, NAND, OR, NOR, XOR and NOT — were realized using Verilog HDL:
+Y_AND = A.B
+Y_NAND = ~(A.B)
+Y_OR = A+B
+Y_NOR = ~(A+B)
+Y_XOR = A^B
+Y_NOT = A'
+    
+# **Test Bench Program**
+
+Program
 module basic_gates (
     input  wire a,
     input  wire b,
     output wire y_and,
+    output wire y_nand,
     output wire y_or,
+    output wire y_nor,
+    output wire y_xor,
     output wire y_not
 );
 
     assign y_and = a & b;   // AND gate
+    assign y_nand = ~(a & b);
     assign y_or  = a | b;   // OR gate
+    assign y_nor = ~(a |b);
+    assign y_xor = a ^ b;
     assign y_not = ~a;      // NOT gate (inverter)
-
+    
+    
 endmodule
-
-# **Test Bench Program**
-
-Program
-module tb2;
-
-    reg a, b;
-    wire y_and, y_or, y_not;
-
-    // Instantiate the design under test (DUT)
-    basic_gates uut (
-        .a(a),
-        .b(b),
-        .y_and(y_and),
-        .y_or(y_or),
-        .y_not(y_not)
-    );
-
-    initial begin
-        // ---- VCD dump setup ----
-        $dumpfile("basic_gates.vcd");   // name of the VCD file to be generated
-        $dumpvars(0, tb2);               // dump all signals in this testbench hierarchy
-
-        // ---- Apply all 4 input combinations ----
-        $monitor("Time=%0t a=%b b=%b | AND=%b OR=%b NOT(a)=%b", $time, a, b, y_and, y_or, y_not);
-
-        a = 0; b = 0; #10;
-        a = 0; b = 1; #10;
-        a = 1; b = 0; #10;
-        a = 1; b = 1; #10;
-
-        #10 $finish;
-#10;
-    end
-
-endmodule
-
 
 
  
-<img width="940" height="318" alt="image" src="https://github.com/user-attachments/assets/8a343bdb-ffb4-4aac-8b88-cf59eca374a8" />
+<img width="727" height="257" alt="image" src="https://github.com/user-attachments/assets/55a86a30-105a-40f2-8170-184fcf782abd" />
+
 
 # Simulation Procedure
 STEP 1 – Open Terminal
@@ -123,29 +105,12 @@ Y_OR = A+B
 Y_NOT = A'
 The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis, matching the expected truth table.
 Output
+<img width="974" height="262" alt="image" src="https://github.com/user-attachments/assets/1a7b7d51-9a7d-479f-9d3a-5ebd487a7498" />
+
+
 # OUTPUT
-<img width="1600" height="900" alt="exp 2" src="https://github.com/user-attachments/assets/405ddee0-51ab-46a1-a49a-881fa6000051" />
+<img width="1600" height="900" alt="image" src="https://github.com/user-attachments/assets/f9d37971-b6da-4e77-8669-bb1810db282f" />
+
 
 
  
-# Viva-Voce Questions
-
-•	What is a logic gate?
-
-•	What are the basic logic gates in digital electronics?
-
-•	What is the Boolean expression for an AND gate? An OR gate? A NOT gate?
-
-•	Why is the NOT gate also called an inverter?
-
-•	What is a universal gate, and how can NAND/NOR realize AND, OR, and NOT?
-
-•	What is the purpose of a Verilog testbench?
-
-•	Why is a VCD file generated?
-
-•	What is the purpose of ./simv?
-•	What is the purpose of DVE?
-•	What is the difference between simulation and synthesis?
-•	What is the difference between $dumpfile and $dumpvars?
-
